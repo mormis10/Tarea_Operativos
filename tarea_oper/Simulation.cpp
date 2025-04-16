@@ -155,4 +155,74 @@ void Simulation::add_performance(int data) {
     this->performance.push_back(data);
 }
 
+int Simulation::calc_Scan(std::vector<int> values, int disk_size){
+  std::vector<int> left;
+  std::vector<int> right;
+  right.push_back(disk_size);
+  left.push_back(1);
+  sort_array(values);
+  for(int i = 0; i<values.size(); i++){
+     if(values[i] > this->head){
+        right.push_back(values[i]);
+     }else{
+      left.push_back(values[i]);
+     }
+  }
+  int cilinders = 0;
+  int pointer = this->head;
+
+  // Vamos a calcular por la derecha
+
+  for(int i = 0; i<right.size(); i++){
+     cilinders+= right[i] - pointer;
+     pointer = right[i];
+  }
+
+  // Ahora vamos pora la izquierda nachito
+  for(int j = 0; j<left.size(); j++){
+    cilinders+= pointer - left[j];
+    pointer = left[j];
+  }
+
+  return cilinders;
+
+}
+
+int Simulation::calc_CSan(std::vector<int> values, int disk_size){
+
+  std::vector<int> left;
+  std::vector<int> right;
+  right.push_back(disk_size);
+  left.push_back(1);
+  sort_array(values);
+  for(int i = 0; i<values.size(); i++){
+     if(values[i] > this->head){
+        right.push_back(values[i]);
+     }else{
+      left.push_back(values[i]);
+     }
+  }
+  int cilinders = 0;
+  int pointer = this->head;
+
+  // Vamos a calcular por la derecha
+
+  for(int i = 0; i<right.size(); i++){
+     cilinders+= right[i] - pointer;
+     pointer = right[i];
+  }
+
+  // retornamos al inicio del disco
+
+  cilinders+= pointer - 1;
+  pointer = 1;
+  // Ahora vamos pora la izquierda nachito
+  for(int j = 0; j<left.size(); j++){
+    cilinders+= left[j] - pointer;
+    pointer = left[j];
+  }
+
+  return cilinders;
+  
+}
 

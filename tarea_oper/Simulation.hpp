@@ -17,6 +17,8 @@ class Simulation{
         void menu();
         int calc_SSTF(data_t* valuesc, int size);
         int calc_FCFS(std::vector<int> values);
+        int calc_Scan(std::vector<int> values, int disk_size);
+        int calc_CSan(std::vector<int> values, int disk_size);
         void add_value(int value);
         void set_head(int fhead);
         void add_performance(int data);
