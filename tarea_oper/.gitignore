@@ -1,5 +1,7 @@
 build/
 bin/
 dist/
+.vscode/*
 *.pyc
 *.out
+*.json
