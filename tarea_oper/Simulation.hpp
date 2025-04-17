@@ -18,13 +18,14 @@ class Simulation{
         int calc_SSTF(data_t* valuesc, int size);
         int calc_FCFS(std::vector<int> values);
         int calc_Scan(std::vector<int> values, int disk_size);
-        int calc_CSan(std::vector<int> values, int disk_size);
+        int calc_CScan(std::vector<int> values, int disk_size);
         void add_value(int value);
         void set_head(int fhead);
         void add_performance(int data);
         void read_file(int argc, char*argv[]);
         void set_values(const std::string& line);
         int calc_performance();
+        int calc_Look(std::vector<int> values);
         std::string trim(const std::string& str);
 
     private:

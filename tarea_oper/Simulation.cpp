@@ -38,6 +38,10 @@ void Simulation::set_values(const std::string& line) {
     if (!num.empty())
       values.push_back(std::stoi(num));
   }
+ 
+ // esta es la cantidad de algortimos con los que vamos a trabajar
+  this->performance.resize(6);
+ 
   // Obtener algoritmo a usar
   if (std::getline(ss, segment, '|')) {
     algorithm = trim(segment);
@@ -86,12 +90,25 @@ void Simulation::menu() {
   printf("El algoritmo de FCFS visitó: %d cilindros", cilinders);
   this->performance[0] = cilinders;
   }else if(entry == "SSTF") {
-
-  }else if(entry == "") {
-
-  }else if(entry == "") {
-
-  }else if(entry == "") {
+    // Ocupamos de nuestro recurso para este 
+    data_t requests[this->values.size()];
+    init_data(requests,this->values);
+    cilinders = this->calc_SSTF(requests,values.size());
+    printf("El algoritmo de SSTF visitó: %d cilindros", cilinders);
+    this->performance[0] = cilinders;
+  }else if(entry == "SCAN") {
+    // Para esta simulación vamos a suponer que tenemos un disco de 200
+    cilinders = this->calc_Scan(this->values,200);
+    printf("El algoritmo de SCAN vistió %i cilindros", cilinders);
+    this->performance[2] = cilinders;
+  }else if(entry == "CSCAN") {
+    cilinders = this->calc_CScan(this->values,200);
+    printf("El algoritmo de CSCAN vistió %i cilindros", cilinders);
+    this->performance[2] = cilinders;
+  }else if(entry == "LOOK") {
+    cilinders = this->calc_Look(this->values);
+    printf("El algoritmo de LOOK vistió %i cilindros", cilinders);
+    this->performance[2] = cilinders;
 
   }else if(entry == "") {
 
@@ -188,7 +205,7 @@ int Simulation::calc_Scan(std::vector<int> values, int disk_size){
 
 }
 
-int Simulation::calc_CSan(std::vector<int> values, int disk_size){
+int Simulation::calc_CScan(std::vector<int> values, int disk_size){
 
   std::vector<int> left;
   std::vector<int> right;
@@ -225,4 +242,38 @@ int Simulation::calc_CSan(std::vector<int> values, int disk_size){
   return cilinders;
   
 }
+int Simulation::calc_Look(std::vector<int> values){
+  std::vector<int> right;
+  std::vector<int> left;
+
+  sort_array(values);
+
+  for(int i = 0; i<values.size(); i++){
+    if(this->head < values[i]){
+      right.push_back(values[i]);
+    }else{
+      left.push_back(values[i]);
+    }
+  }
+
+  int cilinders = 0;
+  // primero servimos la derecha
+  int pointer = head;
+  for(int i = 0; i<right.size(); i++){
+    cilinders+= right[i] -pointer;
+    pointer = right[i];
+  }
+
+  // tenemos que sortear el arreglo de los de la izquiera
+
+  sort_mayor_menor(left);
+  for(int i = 0; i<left.size(); i++){
+    cilinders+= pointer - left[i];
+    pointer = left[i];
+  }
+
+  return cilinders;
+
+}
+
 
