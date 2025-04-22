@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(dirname "$0")"
-PROGRAM="$SCRIPT_DIR/../bin/tarea_oper"
+PROGRAM="$SCRIPT_DIR/../bin/tarea_programada"
 
 pass_count=0
 fail_count=0

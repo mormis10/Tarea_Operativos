@@ -3,7 +3,7 @@
 ## Tarea Programada I: HDD Scheduling
 
 Integrantes:
-- Diego Cerdas *carnet*
+- Diego Cerdas C21988
 - Enrique Bermúdez B81083
 
 ### Instrucciones
@@ -35,16 +35,33 @@ como se muestra a continuación:
 ## Compilación y Ejecución
 
   - Asegurarse de estar en la siguiente ruta:
-  ci-0123-proyecto-integrador-de-redes-y-sistemas-operativos/Primera-etapa/Simulacion
 
-1. Para compilar, escriba los comandos:
-    
-            g++ main.cpp Simulation.cpp -o simulation
+    .. /tarea_programada/
 
-2. Para ejecutar:
+1. Para compilar, escriba el comando:
     
-            ./simulation
+        make 
+
+2. Si planea compilar más de una vez, para mayor seguridad utilice: 
+      
+        make clean && make
+
+3. Para ejecutar con el archivo default (entrada1.txt):
+    
+            ./tarea_programada
+
+3. Si desea utilizar otro archivo.txt, añada su nombre como segundo argumento
+    
+            ./tarea_programada ejemplo.txt
+
 
 ## Compilación para Pruebas
 
-// TO DO
+Después de haber compilado el archivo, se puede ejecutar el comando:
+
+          make test
+
+para utilizar todas las entradas en la carpeta "tests" como pruebas gracias al archivo shell "test.sh".
+Si desea agregar o modificar pruebas, recuerde agregar las soluciones al archivo salidaX.txt correspondiente (input: entrada1.txt, output: salida1.txt).
+
+** Para casos que utilicen la funcionalidad RANK, favor agregar uno por linea, ya que estas pruebas se hacen comparando strings directamente (ej: entrada4.txt)
