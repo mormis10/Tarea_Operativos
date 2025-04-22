@@ -1,4 +1,4 @@
-# CCI-0122 Sistemas Operativos
+# CI-0122 Sistemas Operativos
 
 ## Tarea Programada I: HDD Scheduling
 
@@ -36,7 +36,7 @@ como se muestra a continuación:
 
   - Asegurarse de estar en la siguiente ruta:
 
-    .. /tarea_programada/
+    .. /TAREA_OPERATIVOS/tarea_programada/
 
 1. Para compilar, escriba el comando:
     
@@ -67,20 +67,27 @@ Si desea agregar o modificar pruebas, recuerde agregar las soluciones al archivo
 ** Para casos que utilicen la funcionalidad RANK, favor agregar uno por archivo, ya que estas pruebas se hacen comparando strings directamente (ej: entrada4.txt)
 
 
-## Imágenes de Resultados
+## Imágenes de Resultados (Ver en carpeta "img")
 
 1. Entrada1.txt
 
-![image info](./pictures/image.png)
+![Salida 1](tarea_programada\img\ej1.png)
 
 2. Entrada2.txt
 
-![image info](./pictures/image.png)
+![Salida 3](tarea_programada\img\ej2.png)
+
 
 3. Entrada3.txt
 
-![image info](./pictures/image.png)
+![Salida 3](tarea_programada\img\ej3.png)
+
 
 4. Rank.txt (entrada4.txt en tests)
 
-![image info](./pictures/image.png)
+![Salida RANK](tarea_programada\img\rank.png)
+
+
+5. Casos de Prueba
+
+![Salida Pruebas](tarea_programada\img\test.png)
