@@ -1,4 +1,5 @@
 # Makefile v3.0.1 2023-May-18 Jeisson Hidalgo-Cespedes ECCI-UCR CC-BY 4.0
+# Modificaciones (tests) hechas por Enrique Bermúdez y Diego Cerdas
 
 # Compiler and tool flags
 
@@ -152,6 +153,7 @@ $(BUILD)/%.class: $(SRC)/%.java | $$(@D)/.
 .PHONY: test doc lint run memcheck helgrind clean instdeps update tc project
 test: SHELL:=/bin/bash
 test: $(TARGETS) $(TESTOUT)
+	@./tests/test.sh
 
 # TODO(any): Remove redundancy
 exe/output%.txt: $(TESTS)/input%.txt $(TESTS)/output%.txt

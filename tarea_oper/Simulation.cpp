@@ -4,27 +4,9 @@ Simulation::Simulation() {
 }
 
 void Simulation::read_file(int argc, char*argv[]) {
-  std::string file_options[4] = {"entrada1.txt","entrada2.txt","entrada3.txt","rank.txt"};
   std::string nombre = "entrada1.txt";
   if (argc > 1) {
-    int option = std::stoi(argv[1]);
-    switch(option) {
-      case 1:
-      nombre = "entrada1.txt";
-      break;
-      case 2:
-      nombre = "entrada2.txt";
-      break;
-      case 3:
-      nombre = "entrada3.txt";
-      break;
-      case 4:
-      nombre = "rank.txt";
-      this->rank = true;
-      break;
-    }
-  } else {
-    this->rank = false;
+    nombre = argv[1];
   }
   // Si usuario agrega archivo usarlo, sino default
   std::ifstream file(nombre);
@@ -109,31 +91,31 @@ void Simulation::menu() {
   }
   if(entry == "FCFS") {
     cylinders = this->calc_FCFS(this->values);
-    std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros\n" << std::endl;
+    std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros" << std::endl;
 
   } else if(entry == "SSTF") {
     // Ocupamos de nuestro recurso para este 
     data_t requests[this->values.size()];
     init_data(requests,this->values);
     cylinders = this->calc_SSTF(requests,values.size());
-    std::cout << "El algoritmo de SSTF visitó: " << cylinders << " cilindros\n" << std::endl;
+    std::cout << "El algoritmo de SSTF visitó: " << cylinders << " cilindros" << std::endl;
 
   } else if(entry == "SCAN") {
     // Para esta simulación vamos a suponer que tenemos un disco de 200
     cylinders = this->calc_Scan(this->values,200);
-    std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros\n" << std::endl;
+    std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros" << std::endl;
 
   } else if(entry == "CSCAN") {
     cylinders = this->calc_CScan(this->values,200);
-    std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros\n" << std::endl;
+    std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros" << std::endl;
 
   } else if(entry == "LOOK") {
     cylinders = this->calc_Look(this->values);
-    std::cout << "El algoritmo de LOOK visitó: " << cylinders << " cilindros\n" << std::endl;
+    std::cout << "El algoritmo de LOOK visitó: " << cylinders << " cilindros" << std::endl;
 
   } else if(entry == "CLOOK") {
     cylinders = this->calc_CLook(this->values);
-    std::cout << "El algoritmo de CLOOK visitó: " << cylinders << " cilindros\n" << std::endl;
+    std::cout << "El algoritmo de CLOOK visitó: " << cylinders << " cilindros" << std::endl;
   } else {
     std::cout << "Algoritmo no reconocido" << std::endl;
   }
