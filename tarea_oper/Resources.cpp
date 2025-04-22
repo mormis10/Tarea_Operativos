@@ -1,3 +1,5 @@
+#include <cstddef>
+
 #include "Resources.hpp"
 
 void sort_array(std::vector<int>& values) {

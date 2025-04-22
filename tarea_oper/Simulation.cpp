@@ -4,9 +4,27 @@ Simulation::Simulation() {
 }
 
 void Simulation::read_file(int argc, char*argv[]) {
+  std::string file_options[4] = {"entrada1.txt","entrada2.txt","entrada3.txt","rank.txt"};
   std::string nombre = "entrada1.txt";
   if (argc > 1) {
-    nombre = argv[1];
+    int option = std::stoi(argv[1]);
+    switch(option){
+      case 1:
+      nombre = "entrada1.txt";
+      break;
+      case 2:
+      nombre = "entrada2.txt";
+      break;
+      case 3:
+      nombre = "entrada3.txt";
+      break;
+      case 4:
+      nombre = "rank.txt";
+      this->rank = true;
+      break;
+    }
+  }else{
+    this->rank = false;
   }
   // Si usuario agrega archivo usarlo, sino default
   std::ifstream file(nombre);
@@ -40,7 +58,10 @@ void Simulation::set_values(const std::string& line) {
   }
  
  // esta es la cantidad de algortimos con los que vamos a trabajar
+  if(this->rank){
   this->performance.resize(6);
+  }
+  
  
   // Obtener algoritmo a usar
   if (std::getline(ss, segment, '|')) {
@@ -66,7 +87,12 @@ void Simulation::set_values(const std::string& line) {
   if (std::getline(ss, segment)) {
     this->orden = trim(segment);
   }
-  menu();
+
+  if(!this->rank){
+    menu();
+  }else{
+   rank_menu();
+  }
   return;
 }
 
@@ -85,7 +111,6 @@ void Simulation::menu() {
   if(entry == "FCFS") {
     cylinders = this->calc_FCFS(this->values);
     std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[0] = cylinders;
 
   } else if(entry == "SSTF") {
     // Ocupamos de nuestro recurso para este 
@@ -93,30 +118,93 @@ void Simulation::menu() {
     init_data(requests,this->values);
     cylinders = this->calc_SSTF(requests,values.size());
     std::cout << "El algoritmo de SSTF visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[0] = cylinders;
 
   } else if(entry == "SCAN") {
     // Para esta simulación vamos a suponer que tenemos un disco de 200
     cylinders = this->calc_Scan(this->values,200);
     std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[2] = cylinders;
 
   } else if(entry == "CSCAN") {
     cylinders = this->calc_CScan(this->values,200);
     std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[2] = cylinders;
 
   } else if(entry == "LOOK") {
     cylinders = this->calc_Look(this->values);
     std::cout << "El algoritmo de LOOK visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[2] = cylinders;
 
   } else if(entry == "CLOOK") {
     cylinders = this->calc_CLook(this->values);
     std::cout << "El algoritmo de CLOOK visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[2] = cylinders;
   } else {
     std::cout << "Algoritmo no reconocido" << std::endl;
+  }
+}
+
+void Simulation::rank_menu(){
+  printf("Bienvenido al modo ranked dónde vamos a medir el rendimiento de los algoritmos\n\n");
+  std::string entry = this->algorithm;
+  int cylinders = 0;
+  cylinders = this->calc_FCFS(this->values);
+    std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros\n" << std::endl;
+    this->performance[0] = cylinders;
+
+    data_t requests[this->values.size()];
+    init_data(requests,this->values);
+    cylinders = this->calc_SSTF(requests,values.size());
+    std::cout << "El algoritmo de SSTF visitó: " << cylinders << " cilindros\n" << std::endl;
+    this->performance[1] = cylinders;
+
+    // Para esta simulación vamos a suponer que tenemos un disco de 200
+    cylinders = this->calc_Scan(this->values,200);
+    std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros\n" << std::endl;
+    this->performance[2] = cylinders;
+
+    cylinders = this->calc_CScan(this->values,200);
+    std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros\n" << std::endl;
+    this->performance[3] = cylinders;
+
+    cylinders = this->calc_Look(this->values);
+    std::cout << "El algoritmo de LOOK visitó: " << cylinders << " cilindros\n" << std::endl;
+    this->performance[4] = cylinders;
+
+    cylinders = this->calc_CLook(this->values);
+    std::cout << "El algoritmo de CLOOK visitó: " << cylinders << " cilindros\n" << std::endl;
+    this->performance[5] = cylinders;
+    this->deliver_results();
+
+}
+
+void Simulation::deliver_results(){
+  std::string algorithms[6] = {"FCFS","SSTF","SCAN","CSCAN","LOOK","CLOOK"};
+  int min = 0;
+  int pivot = 0;
+  int index  = 0;
+  std::string minS = "";
+  std::string pivotS = "";
+  for(size_t i = 0; i<this->performance.size(); i++){
+    min = this->performance[i];
+    index = i;
+    minS = algorithms[i];
+    for(size_t j = i + 1; j<this->performance.size(); j++){
+      if(this->performance[j] < min){
+        min = this->performance[j];
+        index = j;
+        minS = algorithms[j];
+      }
+    }
+    pivotS = algorithms[i];
+    algorithms[i] =  minS;
+    algorithms[index] = pivotS;
+    pivot = performance[i];
+    performance[i] = min;
+    performance[index] = pivot;
+  }
+
+  printf("Desglose del rendimiento\n");
+
+  for(size_t i = 0; i<this->performance.size(); i++){
+    printf("Puesto número %li algoritmo: ",i+1);
+    std::cout<<algorithms[i] << "\n";
   }
 }
 

@@ -2,6 +2,7 @@
 #define SIMULATION_HPP
 
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -27,8 +28,9 @@ class Simulation{
         void read_file(int argc, char*argv[]);
         void set_values(const std::string& line);
         int calc_performance();
-
+        void rank_menu();
         std::string trim(const std::string& str);
+        void deliver_results();
 
     private:
         std::vector<int> values;
@@ -37,5 +39,6 @@ class Simulation{
         int head = 0;
         std::string orden = "ASC";
         std::vector<int> performance;
+        bool rank;
 };
 #endif // SIMULATION_HPP
