@@ -1,0 +1,13 @@
+El algoritmo de FCFS visitó: 640 cilindros
+El algoritmo de SSTF visitó: 236 cilindros
+El algoritmo de SCAN visitó: 276 cilindros
+El algoritmo de CSCAN visitó: 348 cilindros
+El algoritmo de LOOK visitó: 299 cilindros
+El algoritmo de CLOOK visitó: 322 cilindros
+Desglose del rendimiento
+Puesto #1: SSTF
+Puesto #2: SCAN
+Puesto #3: LOOK
+Puesto #4: CLOOK
+Puesto #5: CSCAN
+Puesto #6: FCFS
