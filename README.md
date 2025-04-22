@@ -71,23 +71,23 @@ Si desea agregar o modificar pruebas, recuerde agregar las soluciones al archivo
 
 1. Entrada1.txt
 
-![Salida 1](tarea_programada\img\ej1.png)
+![Salida 1](tarea_programada/img/ej1.png)
 
 2. Entrada2.txt
 
-![Salida 3](tarea_programada\img\ej2.png)
+![Salida 3](tarea_programada/img/ej2.png)
 
 
 3. Entrada3.txt
 
-![Salida 3](tarea_programada\img\ej3.png)
+![Salida 3](tarea_programada/img/ej3.png)
 
 
 4. Rank.txt (entrada4.txt en tests)
 
-![Salida RANK](tarea_programada\img\rank.png)
+![Salida RANK](tarea_programada/img/rank.png)
 
 
 5. Casos de Prueba
 
-![Salida Pruebas](tarea_programada\img\test.png)
+![Salida Pruebas](tarea_programada/img/test.png)
