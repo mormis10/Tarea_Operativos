@@ -22,10 +22,8 @@ class Simulation{
         int calc_CScan(std::vector<int> values, int disk_size);
         int calc_Look(std::vector<int> values);
         int calc_CLook(std::vector<int> values);
-        void add_value(int value);
-        void set_head(int fhead);
-        void add_performance(int data);
         void read_file(int argc, char*argv[]);
+        void clean_sim();
         void set_values(const std::string& line);
         int calc_performance();
         void rank_menu();
@@ -39,6 +37,5 @@ class Simulation{
         int head = 0;
         std::string orden = "ASC";
         std::vector<int> performance;
-        bool rank;
 };
 #endif // SIMULATION_HPP

@@ -18,11 +18,21 @@ void Simulation::read_file(int argc, char*argv[]) {
   std::string line;
   while (std::getline(file, line)) {
     if (!line.empty()) {
+      clean_sim();
       set_values(line);
     }
   }
   return;
 }
+
+void Simulation::clean_sim() {
+  values.clear();
+  algorithm.clear();
+  orden = "ASC";
+  head = 0;
+  performance.clear();
+}
+
 
 void Simulation::set_values(const std::string& line) {
   std::stringstream ss(line);
@@ -38,11 +48,7 @@ void Simulation::set_values(const std::string& line) {
     if (!num.empty())
       values.push_back(std::stoi(num));
   }
- 
- // Cantidad de algortimos con los que vamos a trabajar
-  if(this->rank) {
   this->performance.resize(6);
-  }
   
  
   // Obtener algoritmo a usar
@@ -88,8 +94,7 @@ void Simulation::menu() {
   int cylinders = 0;
   if(entry == "RANK") {
     rank_menu();
-  }
-  if(entry == "FCFS") {
+  } else if(entry == "FCFS") {
     cylinders = this->calc_FCFS(this->values);
     std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros" << std::endl;
 
@@ -102,11 +107,11 @@ void Simulation::menu() {
 
   } else if(entry == "SCAN") {
     // Para esta simulación vamos a suponer que tenemos un disco de 200
-    cylinders = this->calc_Scan(this->values,200);
+    cylinders = this->calc_Scan(this->values, 200);
     std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros" << std::endl;
 
   } else if(entry == "CSCAN") {
-    cylinders = this->calc_CScan(this->values,200);
+    cylinders = this->calc_CScan(this->values, 200);
     std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros" << std::endl;
 
   } else if(entry == "LOOK") {
@@ -122,35 +127,33 @@ void Simulation::menu() {
 }
 
 void Simulation::rank_menu() {
-  printf("Bienvenido al modo ranked dónde vamos a medir el rendimiento de los algoritmos\n\n");
-  std::string entry = this->algorithm;
   int cylinders = 0;
 
   cylinders = this->calc_FCFS(this->values);
-  std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros\n" << std::endl;
+  std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros" << std::endl;
   this->performance[0] = cylinders;
 
   data_t requests[this->values.size()];
   init_data(requests,this->values);
-  cylinders = this->calc_SSTF(requests,values.size());
-  std::cout << "El algoritmo de SSTF visitó: " << cylinders << " cilindros\n" << std::endl;
+  cylinders = this->calc_SSTF(requests, values.size());
+  std::cout << "El algoritmo de SSTF visitó: " << cylinders << " cilindros" << std::endl;
   this->performance[1] = cylinders;
 
   // Para esta simulación vamos a suponer que tenemos un disco de 200
-  cylinders = this->calc_Scan(this->values,200);
-  std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros\n" << std::endl;
+  cylinders = this->calc_Scan(this->values, 200);
+  std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros" << std::endl;
   this->performance[2] = cylinders;
 
-  cylinders = this->calc_CScan(this->values,200);
-  std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros\n" << std::endl;
+  cylinders = this->calc_CScan(this->values, 200);
+  std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros" << std::endl;
   this->performance[3] = cylinders;
 
   cylinders = this->calc_Look(this->values);
-  std::cout << "El algoritmo de LOOK visitó: " << cylinders << " cilindros\n" << std::endl;
+  std::cout << "El algoritmo de LOOK visitó: " << cylinders << " cilindros" << std::endl;
   this->performance[4] = cylinders;
 
   cylinders = this->calc_CLook(this->values);
-  std::cout << "El algoritmo de CLOOK visitó: " << cylinders << " cilindros\n" << std::endl;
+  std::cout << "El algoritmo de CLOOK visitó: " << cylinders << " cilindros" << std::endl;
   this->performance[5] = cylinders;
   this->deliver_results();
 
@@ -185,14 +188,14 @@ void Simulation::deliver_results() {
   printf("Desglose del rendimiento\n");
 
   for(size_t i = 0; i < this->performance.size(); i++) {
-    printf("Puesto número %li algoritmo: ",i+1);
+    printf("Puesto #%li: ",i+1);
     std::cout << algorithms[i] << "\n";
   }
 }
 
 int Simulation::calc_FCFS(std::vector<int> values) {
   int cylinders = 0;
-  int pointer = head;
+  int pointer = this->head;
   for(size_t i = 0; i < values.size(); i++) {
       if(pointer > values[i]) {
           cylinders+= pointer - values[i];
@@ -304,7 +307,7 @@ int Simulation::calc_CScan(std::vector<int> values, int disk_size) {
 int Simulation::calc_Look(std::vector<int> values) {
   std::vector<int> right;
   std::vector<int> left;
-
+  
   sort_array(values);
 
   for(size_t i = 0; i < values.size(); i++) {
@@ -348,6 +351,8 @@ int Simulation::calc_Look(std::vector<int> values) {
 int Simulation::calc_CLook(std::vector<int> values) {
   std::vector<int> right;
   std::vector<int> left;
+  right.clear();
+  left.clear();
 
   sort_array(values);
 
@@ -363,16 +368,15 @@ int Simulation::calc_CLook(std::vector<int> values) {
   int pointer = head;
 
   if (this->orden == "ASC") {
-    // Iniciamos por la derecha si ascendiente
     for (int pos : right) {
-      cylinders += abs(pos - pointer);
-      pointer = pos;
+        cylinders += abs(pos - pointer);
+        pointer = pos;
     }
 
     // Si termina la derecha, salta al inicio de requests menores
     // Si izq vacía (cabeza era el minimo), termina
     if (!left.empty()) {
-      cylinders += pointer - left[0];
+      cylinders += std::abs(pointer - left[0]);
       pointer = left[0];
       
       for (int pos : left) {
@@ -394,7 +398,7 @@ int Simulation::calc_CLook(std::vector<int> values) {
     // Si termina con los menores, salta al request mayor
     // Si derecha vacía (cabeza era el maximo), termina
     if (!right.empty()) {
-      cylinders += pointer - right[0];
+      cylinders += std::abs(pointer - right[0]);
       pointer = right[0];
 
       for (size_t i = 0; i < right.size(); i++) {
@@ -407,15 +411,4 @@ int Simulation::calc_CLook(std::vector<int> values) {
   return cylinders;
 }
 
-void Simulation::add_value(int value) {
-  this->values.push_back(value);
-}
-
-void Simulation::set_head(int fhead) {
-  this->head = fhead;
-}
-
-void Simulation::add_performance(int data) {
-  this->performance.push_back(data);
-}
 
