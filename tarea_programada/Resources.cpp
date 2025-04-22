@@ -1,3 +1,5 @@
+// Copyright [2025] Diego Cerdas, Enrique Bermudez
+
 #include <cstddef>
 
 #include "Resources.hpp"

@@ -1,3 +1,5 @@
+// Copyright [2025] Diego Cerdas, Enrique Bermudez
+
 #ifndef RESOURCES_HPP
 #define RESOURCES_HPP
 

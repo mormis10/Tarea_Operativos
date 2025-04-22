@@ -48,11 +48,11 @@ como se muestra a continuación:
 
 3. Para ejecutar con el archivo default (entrada1.txt):
     
-            ./tarea_programada
+        ./bin/tarea_programada
 
 3. Si desea utilizar otro archivo.txt, añada su nombre como segundo argumento
     
-            ./tarea_programada ejemplo.txt
+        ./bin/tarea_programada ejemplo.txt
 
 
 ## Compilación para Pruebas
@@ -64,4 +64,23 @@ Después de haber compilado el archivo, se puede ejecutar el comando:
 para utilizar todas las entradas en la carpeta "tests" como pruebas gracias al archivo shell "test.sh".
 Si desea agregar o modificar pruebas, recuerde agregar las soluciones al archivo salidaX.txt correspondiente (input: entrada1.txt, output: salida1.txt).
 
-** Para casos que utilicen la funcionalidad RANK, favor agregar uno por linea, ya que estas pruebas se hacen comparando strings directamente (ej: entrada4.txt)
+** Para casos que utilicen la funcionalidad RANK, favor agregar uno por archivo, ya que estas pruebas se hacen comparando strings directamente (ej: entrada4.txt)
+
+
+## Imágenes de Resultados
+
+1. Entrada1.txt
+
+![image info](./pictures/image.png)
+
+2. Entrada2.txt
+
+![image info](./pictures/image.png)
+
+3. Entrada3.txt
+
+![image info](./pictures/image.png)
+
+4. Rank.txt (entrada4.txt en tests)
+
+![image info](./pictures/image.png)
