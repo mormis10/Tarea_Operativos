@@ -8,7 +8,7 @@ void Simulation::read_file(int argc, char*argv[]) {
   std::string nombre = "entrada1.txt";
   if (argc > 1) {
     int option = std::stoi(argv[1]);
-    switch(option){
+    switch(option) {
       case 1:
       nombre = "entrada1.txt";
       break;
@@ -23,7 +23,7 @@ void Simulation::read_file(int argc, char*argv[]) {
       this->rank = true;
       break;
     }
-  }else{
+  } else {
     this->rank = false;
   }
   // Si usuario agrega archivo usarlo, sino default
@@ -57,8 +57,8 @@ void Simulation::set_values(const std::string& line) {
       values.push_back(std::stoi(num));
   }
  
- // esta es la cantidad de algortimos con los que vamos a trabajar
-  if(this->rank){
+ // Cantidad de algortimos con los que vamos a trabajar
+  if(this->rank) {
   this->performance.resize(6);
   }
   
@@ -88,11 +88,7 @@ void Simulation::set_values(const std::string& line) {
     this->orden = trim(segment);
   }
 
-  if(!this->rank){
-    menu();
-  }else{
-   rank_menu();
-  }
+  menu();
   return;
 }
 
@@ -108,6 +104,9 @@ std::string Simulation::trim(const std::string& str) {
 void Simulation::menu() {
   std::string entry = this->algorithm;
   int cylinders = 0;
+  if(entry == "RANK") {
+    rank_menu();
+  }
   if(entry == "FCFS") {
     cylinders = this->calc_FCFS(this->values);
     std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros\n" << std::endl;
@@ -140,53 +139,54 @@ void Simulation::menu() {
   }
 }
 
-void Simulation::rank_menu(){
+void Simulation::rank_menu() {
   printf("Bienvenido al modo ranked dónde vamos a medir el rendimiento de los algoritmos\n\n");
   std::string entry = this->algorithm;
   int cylinders = 0;
+
   cylinders = this->calc_FCFS(this->values);
-    std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[0] = cylinders;
+  std::cout << "El algoritmo de FCFS visitó: " << cylinders << " cilindros\n" << std::endl;
+  this->performance[0] = cylinders;
 
-    data_t requests[this->values.size()];
-    init_data(requests,this->values);
-    cylinders = this->calc_SSTF(requests,values.size());
-    std::cout << "El algoritmo de SSTF visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[1] = cylinders;
+  data_t requests[this->values.size()];
+  init_data(requests,this->values);
+  cylinders = this->calc_SSTF(requests,values.size());
+  std::cout << "El algoritmo de SSTF visitó: " << cylinders << " cilindros\n" << std::endl;
+  this->performance[1] = cylinders;
 
-    // Para esta simulación vamos a suponer que tenemos un disco de 200
-    cylinders = this->calc_Scan(this->values,200);
-    std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[2] = cylinders;
+  // Para esta simulación vamos a suponer que tenemos un disco de 200
+  cylinders = this->calc_Scan(this->values,200);
+  std::cout << "El algoritmo de SCAN visitó: " << cylinders << " cilindros\n" << std::endl;
+  this->performance[2] = cylinders;
 
-    cylinders = this->calc_CScan(this->values,200);
-    std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[3] = cylinders;
+  cylinders = this->calc_CScan(this->values,200);
+  std::cout << "El algoritmo de CSCAN visitó: " << cylinders << " cilindros\n" << std::endl;
+  this->performance[3] = cylinders;
 
-    cylinders = this->calc_Look(this->values);
-    std::cout << "El algoritmo de LOOK visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[4] = cylinders;
+  cylinders = this->calc_Look(this->values);
+  std::cout << "El algoritmo de LOOK visitó: " << cylinders << " cilindros\n" << std::endl;
+  this->performance[4] = cylinders;
 
-    cylinders = this->calc_CLook(this->values);
-    std::cout << "El algoritmo de CLOOK visitó: " << cylinders << " cilindros\n" << std::endl;
-    this->performance[5] = cylinders;
-    this->deliver_results();
+  cylinders = this->calc_CLook(this->values);
+  std::cout << "El algoritmo de CLOOK visitó: " << cylinders << " cilindros\n" << std::endl;
+  this->performance[5] = cylinders;
+  this->deliver_results();
 
 }
 
-void Simulation::deliver_results(){
+void Simulation::deliver_results() {
   std::string algorithms[6] = {"FCFS","SSTF","SCAN","CSCAN","LOOK","CLOOK"};
   int min = 0;
   int pivot = 0;
   int index  = 0;
   std::string minS = "";
   std::string pivotS = "";
-  for(size_t i = 0; i<this->performance.size(); i++){
+  for(size_t i = 0; i < this->performance.size(); i++) {
     min = this->performance[i];
     index = i;
     minS = algorithms[i];
-    for(size_t j = i + 1; j<this->performance.size(); j++){
-      if(this->performance[j] < min){
+    for(size_t j = i + 1; j < this->performance.size(); j++) {
+      if(this->performance[j] < min) {
         min = this->performance[j];
         index = j;
         minS = algorithms[j];
@@ -202,9 +202,9 @@ void Simulation::deliver_results(){
 
   printf("Desglose del rendimiento\n");
 
-  for(size_t i = 0; i<this->performance.size(); i++){
+  for(size_t i = 0; i < this->performance.size(); i++) {
     printf("Puesto número %li algoritmo: ",i+1);
-    std::cout<<algorithms[i] << "\n";
+    std::cout << algorithms[i] << "\n";
   }
 }
 
@@ -272,7 +272,7 @@ int Simulation::calc_Scan(std::vector<int> values, int disk_size) {
      pointer = right[i];
   }
 
-  // Ahora vamos pora la izquierda nachito
+  // Ahora vamos por la izquierda
   for(size_t j = 0; j < left.size(); j++) {
     cylinders+= pointer - left[j];
     pointer = left[j];
@@ -305,11 +305,11 @@ int Simulation::calc_CScan(std::vector<int> values, int disk_size) {
      pointer = right[i];
   }
 
-  // retornamos al inicio del disco
-
+  // Volvemos al inicio del disco
   cylinders+= pointer - 1;
   pointer = 1;
-  // Ahora vamos pora la izquierda nachito
+
+  // Ahora vamos por la izquierda
   for(size_t j = 0; j < left.size(); j++) {
     cylinders+= left[j] - pointer;
     pointer = left[j];
@@ -343,7 +343,7 @@ int Simulation::calc_Look(std::vector<int> values) {
       pointer = right[i];
     }
   
-    // tenemos que sortear el arreglo de los de la izquierda
+    // Se sortea el arreglo de los de la izquierda
     sort_mayor_menor(left);
     for(size_t i = 0; i < left.size(); i++) {
       cylinders += pointer - left[i];
@@ -381,7 +381,7 @@ int Simulation::calc_CLook(std::vector<int> values) {
   int pointer = head;
 
   if (this->orden == "ASC") {
-    // Service right side first
+    // Iniciamos por la derecha si ascendiente
     for (int pos : right) {
       cylinders += abs(pos - pointer);
       pointer = pos;
